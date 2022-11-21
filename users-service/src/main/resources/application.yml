@@ -1,0 +1,62 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+server:
+  port: 8086
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    groups-order: DESC
+    disable-swagger-default-url: true
+management:
+  endpoints:
+    web:
+      exposure.include: beans, env, health, info, metrics, mappings
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  cors:
+    allowed-origins: http://localhost:3000
+
+spring:
+  application:
+    name: users-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/moviesdb
+  main:
+    allow-circular-references: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/DigitalMedia
+          jwk-set-uri: http://localhost:8080/realms/DigitalMedia/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak-provider:
+            issuer-uri: http://localhost:8080/realms/DigitalMedia
+        registration:
+          users-service:
+            provider: keycloak-provider
+            client-id: microservicios
+            client-secret: bIWYQuLcQpYIY0bI3J8klGnjFIyrrxZx
+            authorization-grant-type: client_credentials
+            redirect-uri: 'http://localhost:9090/login/oauth2/code/keycloak'
+
+keycloak:
+  realm: DigitalMedia
+  serverUrl: http://localhost:8080
+  clientId: microservicios
+  clientSecret: bIWYQuLcQpYIY0bI3J8klGnjFIyrrxZx
